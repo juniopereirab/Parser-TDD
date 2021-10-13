@@ -7,26 +7,31 @@ public class AnalysisFile {
     private File inputTimeAnalysis;
     private File inputMemoryAnalysis;
 
-    public void config() {
-        this.openMemoryAnalysis(memoryAnalysisPath);
-        this.openTimeAnalysis(timeAnalysisPath);
+    public void config(){
+        try {
+            this.openMemoryAnalysis(memoryAnalysisPath);
+            this.openTimeAnalysis(timeAnalysisPath);
+        }
+        catch(ArquivoNaoEncontradoException error){
+            error.printStackTrace();
+        }
     }
 
-    protected void openTimeAnalysis(String path) {
-        inputTimeAnalysis = new File(path);
+    protected void openTimeAnalysis(String path) throws ArquivoNaoEncontradoException{
+        File file = new File(path);
+        inputTimeAnalysis = file;
     }
 
     public File getTimeAnalysis() {
         return inputTimeAnalysis;
     }
 
-    protected void openMemoryAnalysis(String path) {
-        inputMemoryAnalysis = new File(path);
+    protected void openMemoryAnalysis(String path) throws ArquivoNaoEncontradoException{
+        File file = new File(path);
+        inputMemoryAnalysis = file;
     }
 
     public File getMemoryAnalysis() {
         return inputMemoryAnalysis;
     }
-
-
 }
