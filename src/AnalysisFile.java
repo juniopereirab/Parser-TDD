@@ -19,4 +19,7 @@ public class AnalysisFile {
     public File getMemoryAnalysis() {
         return inputMemoryAnalysis;
     }
+
+    public void config() {
+    }
 }

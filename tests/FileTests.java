@@ -19,4 +19,12 @@ public class FileTests {
         file.openMemoryAnalysis("assets/analysisMemory.out");
         assertTrue(file.getMemoryAnalysis().exists());
     }
+
+    @Test
+    public void configureAnalysisFiles() {
+        AnalysisFile file = new AnalysisFile();
+        file.config();
+        assertTrue(file.getMemoryAnalysis().exists());
+        assertTrue(file.getTimeAnalysis().exists());
+    }
 }
