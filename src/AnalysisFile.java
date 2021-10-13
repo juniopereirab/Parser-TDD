@@ -19,6 +19,9 @@ public class AnalysisFile {
 
     protected void openTimeAnalysis(String path) throws ArquivoNaoEncontradoException{
         File file = new File(path);
+        if(!file.isFile() || !file.exists()){
+            throw new ArquivoNaoEncontradoException();
+        }
         inputTimeAnalysis = file;
     }
 
@@ -28,6 +31,9 @@ public class AnalysisFile {
 
     protected void openMemoryAnalysis(String path) throws ArquivoNaoEncontradoException{
         File file = new File(path);
+        if(!file.isFile() || !file.exists()){
+            throw new ArquivoNaoEncontradoException();
+        }
         inputMemoryAnalysis = file;
     }
 
