@@ -12,4 +12,11 @@ public class FileTests {
         file.openTimeAnalysis("assets/analysisTime.out");
         assertTrue(file.getTimeAnalysis().exists());
     }
+
+    @Test
+    public void openAnalysisMemory () {
+        AnalysisFile file = new AnalysisFile();
+        file.openMemoryAnalysis("assets/analysisMemory.out");
+        assertTrue(file.getMemoryAnalysis().exists());
+    }
 }
