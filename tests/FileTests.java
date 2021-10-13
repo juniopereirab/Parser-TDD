@@ -9,7 +9,7 @@ public class FileTests {
     @Test
     public void openAnalysisTime () {
         AnalysisFile file = new AnalysisFile();
-        File response = file.open("../assets/analysisTime.out");
-        assertTrue(response.exists());
+        file.openTimeAnalysis("assets/analysisTime.out");
+        assertTrue(file.getTimeAnalysis().exists());
     }
 }
