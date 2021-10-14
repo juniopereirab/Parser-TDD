@@ -3,6 +3,6 @@ public class FileHandler {
     }
 
     public char getDelimiter() {
-        return '.';
+        return ';';
     }
 }
