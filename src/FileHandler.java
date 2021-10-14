@@ -1,15 +1,15 @@
 public class FileHandler {
 
-    private String delimiter;
+    private char delimiter;
 
     public void setDelimiter(String delimiter) {
         if(delimiter.length() != 1){
             throw new DelimitadorInvalidoException("Delimitador deve ser apenas um caracter");
         }
-        this.delimiter = delimiter;
+        this.delimiter = delimiter.charAt(0);
     }
 
-    public String getDelimiter() {
+    public char getDelimiter() {
         return delimiter;
     }
 }

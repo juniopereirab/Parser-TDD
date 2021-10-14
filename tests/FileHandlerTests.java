@@ -9,7 +9,7 @@ public class FileHandlerTests {
         String delimiter = ";";
         FileHandler handler = new FileHandler();
         handler.setDelimiter(delimiter);
-        assertEquals(";", handler.getDelimiter());
+        assertEquals(';', handler.getDelimiter());
     }
 
     @Test(expected = DelimitadorInvalidoException.class)
