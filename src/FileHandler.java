@@ -1,11 +1,12 @@
 public class FileHandler {
 
-    private char delimiter;
-    public void setDelimiter(char delimiter) {
+    private String delimiter;
+
+    public void setDelimiter(String delimiter) {
         this.delimiter = delimiter;
     }
 
-    public char getDelimiter() {
+    public String getDelimiter() {
         return delimiter;
     }
 }
