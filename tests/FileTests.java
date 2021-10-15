@@ -11,7 +11,7 @@ public class FileTests {
         try {
             AnalysisFile file = new AnalysisFile();
             file.openTimeAnalysis(timeAnalysisPath);
-            assertTrue(file.getTimeAnalysis().isFile());
+            assertNotNull(file.getTimeAnalysis());
         }
         catch(ArquivoNaoEncontradoException e){
             e.printStackTrace();
@@ -24,7 +24,7 @@ public class FileTests {
         try{
             AnalysisFile file = new AnalysisFile();
             file.openMemoryAnalysis(memoryAnalysisPath);
-            assertTrue(file.getMemoryAnalysis().isFile());
+            assertNotNull(file.getMemoryAnalysis());
         }
         catch(ArquivoNaoEncontradoException e){
             e.printStackTrace();
@@ -35,8 +35,8 @@ public class FileTests {
     public void configureAnalysisFiles() {
         AnalysisFile file = new AnalysisFile();
         file.config();
-        assertTrue(file.getMemoryAnalysis().isFile());
-        assertTrue(file.getTimeAnalysis().isFile());
+        assertNotNull(file.getMemoryAnalysis());
+        assertNotNull(file.getTimeAnalysis());
     }
 
     @Test(expected = ArquivoNaoEncontradoException.class)

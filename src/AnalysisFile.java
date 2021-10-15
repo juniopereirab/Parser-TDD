@@ -1,11 +1,13 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class AnalysisFile {
     private static final String timeAnalysisPath = "assets/analysisTime.out";
     private static final String memoryAnalysisPath = "assets/analysisMemory.out";
-
-    private File inputTimeAnalysis;
-    private File inputMemoryAnalysis;
+    
+    private FileReader timeAnalysis;
+    private FileReader memoryAnalysis;
 
     public void config(){
         try {
@@ -18,26 +20,28 @@ public class AnalysisFile {
     }
 
     protected void openTimeAnalysis(String path) throws ArquivoNaoEncontradoException{
-        File file = new File(path);
-        if(!file.isFile() || !file.exists()){
+        try {
+            timeAnalysis = new FileReader(path);
+        }
+        catch(FileNotFoundException e){
             throw new ArquivoNaoEncontradoException(path);
         }
-        inputTimeAnalysis = file;
-    }
 
-    public File getTimeAnalysis() {
-        return inputTimeAnalysis;
     }
 
     protected void openMemoryAnalysis(String path) throws ArquivoNaoEncontradoException{
-        File file = new File(path);
-        if(!file.isFile() || !file.exists()){
+        try{
+            memoryAnalysis = new FileReader(path);
+        } catch (FileNotFoundException e){
             throw new ArquivoNaoEncontradoException(path);
         }
-        inputMemoryAnalysis = file;
     }
 
-    public File getMemoryAnalysis() {
-        return inputMemoryAnalysis;
+    public FileReader getTimeAnalysis() {
+        return timeAnalysis;
     }
+    public FileReader getMemoryAnalysis() {
+        return memoryAnalysis;
+    }
+
 }
