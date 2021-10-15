@@ -1,7 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class FileHandler {
 
@@ -19,12 +18,12 @@ public class FileHandler {
         return delimiter;
     }
 
-    public void setWriter(String outputPath) {
+    public void setWriter(String outputPath) throws EscritaNaoPermitidaException {
         try {
             FileWriter writer = new FileWriter(outputPath);
             this.writer = writer;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new EscritaNaoPermitidaException("Escrita não autorizada");
         }
 
     }
@@ -33,10 +32,14 @@ public class FileHandler {
         return writer;
     }
 
-    public void writeFile() throws IOException {
-        BufferedWriter buffWrite = new BufferedWriter(writer);
-        String linha = "teste";
-        buffWrite.append(linha);
-        buffWrite.close();
+    public void writeFile(String line) throws EscritaNaoPermitidaException {
+        try {
+            BufferedWriter buffWrite = new BufferedWriter(writer);
+            buffWrite.append(line);
+            buffWrite.close();
+        }
+        catch(IOException e){
+            throw new EscritaNaoPermitidaException("Escrita não autorizada");
+        }
     }
 }
