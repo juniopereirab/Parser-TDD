@@ -1,8 +1,10 @@
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class FileHandler {
 
     private char delimiter;
+    private FileWriter writer;
 
     public void setDelimiter(String delimiter) {
         if(delimiter.length() != 1){
@@ -15,14 +17,17 @@ public class FileHandler {
         return delimiter;
     }
 
-    public void configWriter(String outputPath) {
-    }
-
     public void setWriter(String outputPath) {
+        try {
+            FileWriter writer = new FileWriter(outputPath);
+            this.writer = writer;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public Object getWriter() {
-        return new Object();
+    public FileWriter getWriter() {
+        return writer;
     }
 }
