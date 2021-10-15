@@ -30,4 +30,7 @@ public class FileHandler {
     public FileWriter getWriter() {
         return writer;
     }
+
+    public void writeFile() {
+    }
 }

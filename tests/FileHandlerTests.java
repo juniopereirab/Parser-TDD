@@ -4,8 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -55,5 +54,24 @@ public class FileHandlerTests {
     public void createFileWriter() {
         handler.setWriter(outputPath);
         assertNotNull(handler.getWriter());
+    }
+
+    @Test
+    public void writeInFile() {
+        handler.setWriter(outputPath);
+        handler.writeFile();
+
+        try {
+            FileReader outputFile = new FileReader(outputPath);
+            BufferedReader buffReader = new BufferedReader(outputFile);
+            String text = buffReader.readLine();
+            assertEquals("teste", text);
+        }
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
