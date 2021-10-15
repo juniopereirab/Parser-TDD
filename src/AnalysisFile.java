@@ -29,10 +29,6 @@ public class AnalysisFile {
 
     }
 
-    public FileReader getTimeAnalysis() {
-        return timeAnalysis;
-    }
-
     protected void openMemoryAnalysis(String path) throws ArquivoNaoEncontradoException{
         try{
             memoryAnalysis = new FileReader(path);
@@ -41,7 +37,11 @@ public class AnalysisFile {
         }
     }
 
+    public FileReader getTimeAnalysis() {
+        return timeAnalysis;
+    }
     public FileReader getMemoryAnalysis() {
         return memoryAnalysis;
     }
+
 }

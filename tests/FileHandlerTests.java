@@ -4,12 +4,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
 public class FileHandlerTests {
+    private static final String outputPath = "assets/final.out";
 
     @Parameters
     public static Iterable getParameters() {
@@ -46,5 +49,11 @@ public class FileHandlerTests {
     public void receiveDelimiterStringWithFailure() {
         String delimiter = "test";
         handler.setDelimiter(delimiter);
+    }
+
+    @Test
+    public void createFileWriter() {
+        handler.setWriter(outputPath);
+        assertNotNull(handler.getWriter());
     }
 }

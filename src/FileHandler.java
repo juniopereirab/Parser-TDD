@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+
 public class FileHandler {
 
     private char delimiter;
@@ -11,5 +13,16 @@ public class FileHandler {
 
     public char getDelimiter() {
         return delimiter;
+    }
+
+    public void configWriter(String outputPath) {
+    }
+
+    public void setWriter(String outputPath) {
+
+    }
+
+    public Object getWriter() {
+        return new Object();
     }
 }
