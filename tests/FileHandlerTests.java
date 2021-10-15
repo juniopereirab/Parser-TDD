@@ -59,12 +59,12 @@ public class FileHandlerTests {
     @Test
     public void writeInFile() {
         handler.setWriter(outputPath);
-        handler.writeFile();
-
         try {
+            handler.writeFile();
             FileReader outputFile = new FileReader(outputPath);
             BufferedReader buffReader = new BufferedReader(outputFile);
             String text = buffReader.readLine();
+            buffReader.close();
             assertEquals("teste", text);
         }
         catch(FileNotFoundException e){

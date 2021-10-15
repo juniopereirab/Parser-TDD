@@ -1,5 +1,7 @@
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class FileHandler {
 
@@ -31,6 +33,10 @@ public class FileHandler {
         return writer;
     }
 
-    public void writeFile() {
+    public void writeFile() throws IOException {
+        BufferedWriter buffWrite = new BufferedWriter(writer);
+        String linha = "teste";
+        buffWrite.append(linha);
+        buffWrite.close();
     }
 }
