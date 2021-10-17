@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Scanner i = new Scanner(System.in);
         FileHandler handle = new FileHandler();
         Parser p;
@@ -34,7 +34,16 @@ public class Main {
             String parsedData = p.getParsedData();
             if (p.saveParsedData(parsedData, out)) {
                 System.out.println("Arquivo parseado.");
+                System.out.printf("Iterações: %d\n", p.getIteration());
+
+                List<Integer> analises = p.getAnalises();
+
+                for (int j = 0; j < analises.size(); j++) {
+                    System.out.printf("Convolução %d: %d analises pontuais\n", j+1, analises.get(j));
+                }
             }
+        } else {
+            System.out.println("Erro ao abrir arquivo.");
         }
     }
 }
