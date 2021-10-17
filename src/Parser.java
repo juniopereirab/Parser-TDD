@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.management.BufferPoolMXBean;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,5 +153,18 @@ public class Parser {
         }
 
         return removeInvalidChars(res);
+    }
+
+    public boolean saveParsedData(String parsedRes, String outputPath) {
+        try {
+            FileHandler handler = new FileHandler();
+            handler.setWriter(outputPath);
+            handler.writeFile(parsedRes);
+
+            return true;
+        } catch(Exception excpt) {
+            return false;
+        }
+
     }
 }
