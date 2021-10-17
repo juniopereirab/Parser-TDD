@@ -15,6 +15,18 @@ public class Parser {
         this.orientation = orientation;
     }
 
+    public char getDelimitator() {
+        return this.delimitator;
+    }
+
+    public int getIteration() {
+        return this.iteration - 1;
+    }
+
+    public char getOrientation() {
+        return this.orientation;
+    }
+
     private String transpose(List<List<String>> convolutions, int max_index) {
         String converted = new String("");
 
@@ -30,7 +42,7 @@ public class Parser {
             if (i != max_index - 1)
                 converted = converted.concat("\n");
         }
-        
+
         return converted;
     }
 
