@@ -27,6 +27,8 @@ public class Parser {
         return this.iteration - 1;
     }
 
+    public List<Integer> getAnalises() { return this.analises; }
+
     public char getOrientation() {
         return this.orientation;
     }
