@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.lang.management.BufferPoolMXBean;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.NumberFormat;
@@ -25,6 +28,23 @@ public class Parser {
 
     public char getOrientation() {
         return this.orientation;
+    }
+
+    public boolean getDataFromFile(String outputPath) {
+        try {
+            FileReader outputFile = new FileReader(outputPath);
+            BufferedReader buffReader = new BufferedReader(outputFile);
+            String text;
+
+            while ((text = buffReader.readLine()) != null) {
+                this.content.add(text);
+            }
+
+            buffReader.close();
+            return true;
+        } catch(Exception excpt) {
+            return false;
+        }
     }
 
     private String transpose(List<List<String>> convolutions, int max_index) {
@@ -61,25 +81,25 @@ public class Parser {
         int dump = 0;
         int counter = 1;
 
-        for (int i = 0; i < this.content.size(); i++) {
-            if (i != 0 && this.content.get(i).contains("-----")) {
+        for (int i = 0; i < content.size(); i++) {
+            if (i != 0 && content.get(i).contains("-----")) {
                 result = result.concat("\n");
-                this.analises.add(dump);
+                analises.add(dump);
                 dump = 0;
             }
 
-            if (this.content.get(i).contains("-----")) {
+            if (content.get(i).contains("-----")) {
                 String iteration = NumberFormat.getInstance().format(counter) + this.delimitator;
                 result = result.concat(iteration);
                 counter++;
             } else {
-                result = result.concat(this.content.get(i) + this.delimitator);
+                result = result.concat(content.get(i) + this.delimitator);
                 dump++;
             }
         }
 
-        this.analises.add(dump);
-        this.iteration = counter;
+        analises.add(dump);
+        iteration = counter;
         return result;
     }
 
