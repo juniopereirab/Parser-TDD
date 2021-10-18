@@ -44,4 +44,26 @@ public class ParserTest {
         assertEquals(true, p2.getDataFromFile("assets/reducedExample2.out"));
         assertEquals(res2, p2.getParsedData());
     }
+
+    @Test
+    public void saveParsedDataCorrectly() {
+        Parser p = new Parser("assets/analysisTime.out", 'h', ';');
+        String parsedData = new String("");
+
+        assertEquals(true, p.getDataFromFile("assets/analysisTime.out"));
+
+        parsedData = p.getParsedData();
+        assertEquals(true, p.saveParsedData(parsedData, "assets/final.out"));
+    }
+
+    @Test
+    public void saveParsedDataIncorrectly() {
+        Parser p = new Parser("assets/analysisTime.out", 'h', ';');
+        String parsedData = new String("");
+
+        assertEquals(true, p.getDataFromFile("assets/analysisTime.out"));
+
+        parsedData = p.getParsedData();
+        assertEquals(false, p.saveParsedData(parsedData, "assets/"));
+    }
 }
