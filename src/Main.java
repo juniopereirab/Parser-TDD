@@ -20,7 +20,6 @@ public class Main {
         System.out.println("Escreva o separador desejado. Apenas um caracter é aceito: ");
         dump = i.nextLine();
         handle.setDelimiter(dump);
-        delimitator = handle.getDelimiter();
 
         System.out.println("Escolha a opção de orientação da saída dos dados: use 'v' para vertical e 'h' para horizontal: ");
         orientation = i.nextLine().charAt(0);
@@ -28,7 +27,8 @@ public class Main {
         System.out.println("Escreva o caminho do arquivo de saída: ");
         out = i.nextLine();
 
-        p = new Parser(in, orientation, delimitator);
+        p = new Parser(in, orientation);
+        p.setHandler(handle);
 
         if (p.getDataFromFile()) {
             String parsedData = p.getParsedData();
