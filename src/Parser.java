@@ -9,18 +9,19 @@ import java.text.NumberFormat;
 public class Parser {
     private char orientation;
     private int iteration;
-    private char delimitator;
     private List<String> content = new ArrayList<String>();
     private List<Integer> analises = new ArrayList<Integer>();
-//    private AnalysisFile file;
+    private AnalysisFile file;
+    private FileHandler handler;
 
-    public Parser(String file, char orientation, char delimitator) {
-        this.delimitator = delimitator;
+    public Parser(String file, char orientation) {
+        this.file = new AnalysisFile();
+        this.file.openTimeAnalysis(file);
         this.orientation = orientation;
     }
 
-    public char getDelimitator() {
-        return this.delimitator;
+    public void setHandler(FileHandler handler) {
+        this.handler = handler;
     }
 
     public int getIteration() {
@@ -33,20 +34,28 @@ public class Parser {
         return this.orientation;
     }
 
-    public boolean getDataFromFile(String outputPath) {
+    public boolean getDataFromFile() {
         try {
-            FileReader outputFile = new FileReader(outputPath);
-            BufferedReader buffReader = new BufferedReader(outputFile);
-            String text;
+            BufferedReader buffReader = new BufferedReader(this.file.getTimeAnalysis());
 
-            while ((text = buffReader.readLine()) != null) {
-                this.content.add(text);
-            }
+            this.checkAndAddContent(buffReader);
 
             buffReader.close();
             return true;
         } catch(Exception excpt) {
             return false;
+        }
+    }
+
+    private void checkAndAddContent(BufferedReader buffReader) throws Exception {
+        try{
+            String text;
+
+            while ((text = buffReader.readLine()) != null) {
+                this.content.add(text);
+            }
+        } catch (IOException e) {
+            throw new Exception(e);
         }
     }
 
@@ -56,9 +65,9 @@ public class Parser {
         for (int i = 0; i < max_index; i++) {
             for (int j = 0; j < convolutions.size(); j++) {
                 try {
-                    converted = converted.concat(convolutions.get(j).get(i) + this.delimitator);
+                    converted = converted.concat(convolutions.get(j).get(i) + handler.getDelimiter());
                 } catch(Exception excpt){
-                    converted = converted.concat(String.valueOf(this.delimitator));
+                    converted = converted.concat(String.valueOf(handler.getDelimiter()));
                 }
             }
 
@@ -92,11 +101,11 @@ public class Parser {
             }
 
             if (content.get(i).contains("-----")) {
-                String iteration = NumberFormat.getInstance().format(counter) + this.delimitator;
+                String iteration = NumberFormat.getInstance().format(counter) + handler.getDelimiter();
                 result = result.concat(iteration);
                 counter++;
             } else {
-                result = result.concat(content.get(i) + this.delimitator);
+                result = result.concat(content.get(i) + handler.getDelimiter());
                 dump++;
             }
         }
@@ -107,7 +116,7 @@ public class Parser {
     }
 
     private String parseVertically(String tgt) {
-        String[] split_str = tgt.split(String.valueOf(this.delimitator));
+        String[] split_str = tgt.split(String.valueOf(handler.getDelimiter()));
         List<List<String>> convolutions = new ArrayList<List<String>>();
         List<String> convo_dump = new ArrayList<String>();
 
@@ -119,10 +128,10 @@ public class Parser {
                 convolutions.add(convo_dump);
 
             if (i == 0)
-                col = col.concat(split_str[i] + this.delimitator);
+                col = col.concat(split_str[i] + handler.getDelimiter());
 
             else if (split_str[i].contains("\n")) {
-                col = col.concat(split_str[i].replace("\n", "") + this.delimitator);
+                col = col.concat(split_str[i].replace("\n", "") + handler.getDelimiter());
                 convolutions.add(convo_dump);
                 convo_dump = new ArrayList<String>();
             } else {
@@ -139,8 +148,8 @@ public class Parser {
     }
 
     public String removeInvalidChars(String tgt) {
-        tgt = tgt.replaceAll(this.delimitator + "$", "");
-        tgt = tgt.replaceAll(this.delimitator + "\n", "\n");
+        tgt = tgt.replaceAll(handler.getDelimiter() + "$", "");
+        tgt = tgt.replaceAll(handler.getDelimiter() + "\n", "\n");
 
         return tgt;
     }
@@ -159,7 +168,6 @@ public class Parser {
 
     public boolean saveParsedData(String parsedRes, String outputPath) {
         try {
-            FileHandler handler = new FileHandler();
             handler.setWriter(outputPath);
             handler.writeFile(parsedRes);
 
