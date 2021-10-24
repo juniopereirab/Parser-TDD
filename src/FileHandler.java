@@ -4,11 +4,8 @@ import java.io.IOException;
 
 public class FileHandler {
 
-    private char delimiter;
     private FileWriter writer;
     private String result;
-
-
 
     public void setWriter(String outputPath) throws EscritaNaoPermitidaException {
         try {

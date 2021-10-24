@@ -10,40 +10,51 @@ public class Parser {
     private char orientation;
     private char delimiter;
     private int iteration;
-    private List<String> content = new ArrayList<String>();
-    private List<Integer> analises = new ArrayList<Integer>();
-    private FileHandler handler;
+    private List<String> content = new ArrayList<>();
+    private List<Integer> analises = new ArrayList<>();
 
+    public String getParsedData() {
+        String res = "";
+        res = parseHorizontally(res);
 
-
-    private String transpose(List<List<String>> convolutions, int max_index) {
-        String converted = new String("");
-
-        for (int i = 0; i < max_index; i++) {
-            for (int j = 0; j < convolutions.size(); j++) {
-                try {
-                    converted = converted.concat(convolutions.get(j).get(i) + delimiter);
-                } catch(Exception excpt){
-                    converted = converted.concat(String.valueOf(delimiter));
-                }
-            }
-
-            if (i != max_index - 1)
-                converted = converted.concat("\n");
+        if (this.orientation == 'v') {
+            String vertical_parsed = parseVertically(res);
+            return removeInvalidChars(vertical_parsed);
         }
 
-        return converted;
+        return removeInvalidChars(res);
     }
 
-    private int getMaxIndex(List<List<String>> convolutions) {
-        int max_index = -1000;
+    private String parseVertically(String result) {
+        String[] split_str = result.split(String.valueOf(delimiter));
+        List<List<String>> convolutions = new ArrayList<>();
+        List<String> convo_dump = new ArrayList<>();
 
-        for (int i = 0; i < convolutions.size(); i++) {
-            if (convolutions.get(i).size() > max_index)
-                max_index = convolutions.get(i).size();
+        String col = "";
+        String res = "";
+
+        for (int i = 0; i < split_str.length; i++) {
+            if (i == split_str.length - 1)
+                convolutions.add(convo_dump);
+
+            if (i == 0)
+                col = col.concat(split_str[i] + delimiter);
+
+            else if (split_str[i].contains("\n")) {
+                col = col.concat(split_str[i].replace("\n", "") + delimiter);
+                convolutions.add(convo_dump);
+                convo_dump = new ArrayList<String>();
+            } else {
+                convo_dump.add(split_str[i]);
+            }
         }
 
-        return max_index;
+        int max_index = getMaxIndex(convolutions);
+        String converted = transpose(convolutions, max_index);
+        col = col.concat("\n");
+        res = res.concat(col);
+        res = res.concat(converted);
+        return res;
     }
 
     private String parseHorizontally(String result) {
@@ -72,55 +83,42 @@ public class Parser {
         return result;
     }
 
-    private String parseVertically(String tgt) {
-        String[] split_str = tgt.split(String.valueOf(delimiter));
-        List<List<String>> convolutions = new ArrayList<List<String>>();
-        List<String> convo_dump = new ArrayList<String>();
+    private String transpose(List<List<String>> convolutions, int max_index) {
+        String converted = "";
 
-        String col = new String("");
-        String res = new String("");
-
-        for (int i = 0; i < split_str.length; i++) {
-            if (i == split_str.length - 1)
-                convolutions.add(convo_dump);
-
-            if (i == 0)
-                col = col.concat(split_str[i] + delimiter);
-
-            else if (split_str[i].contains("\n")) {
-                col = col.concat(split_str[i].replace("\n", "") + delimiter);
-                convolutions.add(convo_dump);
-                convo_dump = new ArrayList<String>();
-            } else {
-                convo_dump.add(split_str[i]);
+        for (int i = 0; i < max_index; i++) {
+            for (int j = 0; j < convolutions.size(); j++) {
+                try {
+                    converted = converted.concat(convolutions.get(j).get(i) + delimiter);
+                } catch(Exception excpt){
+                    converted = converted.concat(String.valueOf(delimiter));
+                }
             }
+
+            if (i != max_index - 1)
+                converted = converted.concat("\n");
         }
 
-        int max_index = getMaxIndex(convolutions);
-        String converted = transpose(convolutions, max_index);
-        col = col.concat("\n");
-        res = res.concat(col);
-        res = res.concat(converted);
-        return res;
+        return converted;
     }
+
+    private int getMaxIndex(List<List<String>> convolutions) {
+        int max_index = -1000;
+
+        for (int i = 0; i < convolutions.size(); i++) {
+            if (convolutions.get(i).size() > max_index)
+                max_index = convolutions.get(i).size();
+        }
+
+        return max_index;
+    }
+
 
     public String removeInvalidChars(String tgt) {
         tgt = tgt.replaceAll(delimiter + "$", "");
         tgt = tgt.replaceAll(delimiter + "\n", "\n");
 
         return tgt;
-    }
-
-    public String getParsedData() {
-        String res = new String("");
-        res = parseHorizontally(res);
-
-        if (this.orientation == 'v') {
-            String vertical_parsed = parseVertically(res);
-            return removeInvalidChars(vertical_parsed);
-        }
-
-        return removeInvalidChars(res);
     }
 
     public void setOrientation(char orientation) {
@@ -142,17 +140,11 @@ public class Parser {
         return delimiter;
     }
 
-    public void setHandler(FileHandler handler) {
-        this.handler = handler;
-    }
-
     public int getIteration() {
         return this.iteration - 1;
     }
 
     public List<Integer> getAnalises() { return this.analises; }
-
-
 
     public void setContent(List<String> content) {
         this.content = content;
