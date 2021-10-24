@@ -11,12 +11,9 @@ public class Parser {
     private int iteration;
     private List<String> content = new ArrayList<String>();
     private List<Integer> analises = new ArrayList<Integer>();
-    private AnalysisFile file;
     private FileHandler handler;
 
-    public Parser(String file, char orientation) {
-        this.file = new AnalysisFile();
-        this.file.openTimeAnalysis(file);
+    public Parser(char orientation) {
         this.orientation = orientation;
     }
 
@@ -34,29 +31,8 @@ public class Parser {
         return this.orientation;
     }
 
-    public boolean getDataFromFile() {
-        try {
-            BufferedReader buffReader = new BufferedReader(this.file.getTimeAnalysis());
-
-            this.checkAndAddContent(buffReader);
-
-            buffReader.close();
-            return true;
-        } catch(Exception excpt) {
-            return false;
-        }
-    }
-
-    private void checkAndAddContent(BufferedReader buffReader) throws Exception {
-        try{
-            String text;
-
-            while ((text = buffReader.readLine()) != null) {
-                this.content.add(text);
-            }
-        } catch (IOException e) {
-            throw new Exception(e);
-        }
+    public void setContent(List<String> content) {
+        this.content = content;
     }
 
     private String transpose(List<List<String>> convolutions, int max_index) {

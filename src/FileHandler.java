@@ -25,7 +25,6 @@ public class FileHandler {
         } catch (IOException e) {
             throw new EscritaNaoPermitidaException("Escrita não autorizada");
         }
-
     }
 
     public FileWriter getWriter() {

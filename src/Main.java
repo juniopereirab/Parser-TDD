@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         Scanner i = new Scanner(System.in);
+        AnalysisFile entryFile = new AnalysisFile();
         FileHandler handle = new FileHandler();
         Parser p;
 
@@ -16,6 +17,7 @@ public class Main {
 
         System.out.println("Escreva o caminho do arquivo de entrada: ");
         in = i.nextLine();
+        entryFile.openTimeAnalysis(in);
 
         System.out.println("Escreva o separador desejado. Apenas um caracter é aceito: ");
         dump = i.nextLine();
@@ -27,10 +29,11 @@ public class Main {
         System.out.println("Escreva o caminho do arquivo de saída: ");
         out = i.nextLine();
 
-        p = new Parser(in, orientation);
+        p = new Parser(orientation);
         p.setHandler(handle);
 
-        if (p.getDataFromFile()) {
+        if (true) {
+            p.setContent(entryFile.getContent());
             String parsedData = p.getParsedData();
             if (p.saveParsedData(parsedData, out)) {
                 System.out.println("Arquivo parseado.");
