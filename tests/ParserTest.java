@@ -32,11 +32,17 @@ public class ParserTest {
 
     @Test
     public void receiveDataOutOrientation() {
-        p.setOrientation('v');
+        p.setOrientation("v");
         assertEquals('v', p.getOrientation());
 
-        p.setOrientation('h');
+        p.setOrientation("h");
         assertEquals('h', p.getOrientation());
+    }
+
+    @Test(expected = OrientacaoInvalidaException.class)
+    public void receiveLongerOrientation() {
+        p.setOrientation("teste");
+        assertEquals("teste", p.getOrientation());
     }
 
     @Test
@@ -47,7 +53,7 @@ public class ParserTest {
 
         p.setContent(entryFile.getContent());
         p.setDelimiter(";");
-        p.setOrientation('h');
+        p.setOrientation("h");
         String res = "1;345;544;465;767\n2;703;812;800";
         assertEquals(res, p.getParsedData());
 
@@ -58,7 +64,7 @@ public class ParserTest {
         Parser p2 = new Parser();
         p2.setContent(entryFile2.getContent());
         p2.setDelimiter(";");
-        p2.setOrientation('h');
+        p2.setOrientation("h");
         String res2 = "1;244;326;425;577\n2;503;734;799";
         assertEquals(res2, p2.getParsedData());
     }
@@ -71,7 +77,7 @@ public class ParserTest {
 
         p.setContent(entryFile.getContent());
         p.setDelimiter(";");
-        p.setOrientation('v');
+        p.setOrientation("v");
         String res = "1;2\n345;703\n544;812\n465;800\n767;";
         assertEquals(res, p.getParsedData());
 
@@ -82,7 +88,7 @@ public class ParserTest {
         Parser p2 = new Parser();
         p2.setContent(entryFile2.getContent());
         p2.setDelimiter(";");
-        p2.setOrientation('v');
+        p2.setOrientation("v");
         String res2 = "1;2\n244;503\n326;734\n425;799\n577;";
 
         assertEquals(res2, p2.getParsedData());

@@ -1,7 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.management.BufferPoolMXBean;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.NumberFormat;
@@ -121,8 +117,12 @@ public class Parser {
         return tgt;
     }
 
-    public void setOrientation(char orientation) {
-        this.orientation = orientation;
+    public void setOrientation(String orientation) {
+        if(orientation.length() != 1){
+            throw new OrientacaoInvalidaException("Orientação deve ter apenas um caracter");
+        }
+
+        this.orientation = orientation.charAt(0);
     }
 
     public char getOrientation() {

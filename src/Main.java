@@ -13,7 +13,7 @@ public class Main {
             String in;
             String out;
             String delimiter;
-            char orientation;
+            String orientation;
 
             System.out.println("Escreva o caminho do arquivo de entrada: ");
             in = i.nextLine();
@@ -25,7 +25,7 @@ public class Main {
             p.setDelimiter(delimiter);
 
             System.out.println("Escolha a opção de orientação da saída dos dados: use 'v' para vertical e 'h' para horizontal: ");
-            orientation = i.nextLine().charAt(0);
+            orientation = i.nextLine();
             p.setOrientation(orientation);
 
             System.out.println("Escreva o caminho do arquivo de saída: ");
