@@ -8,32 +8,13 @@ import java.text.NumberFormat;
 
 public class Parser {
     private char orientation;
+    private char delimiter;
     private int iteration;
     private List<String> content = new ArrayList<String>();
     private List<Integer> analises = new ArrayList<Integer>();
     private FileHandler handler;
 
-    public Parser(char orientation) {
-        this.orientation = orientation;
-    }
 
-    public void setHandler(FileHandler handler) {
-        this.handler = handler;
-    }
-
-    public int getIteration() {
-        return this.iteration - 1;
-    }
-
-    public List<Integer> getAnalises() { return this.analises; }
-
-    public char getOrientation() {
-        return this.orientation;
-    }
-
-    public void setContent(List<String> content) {
-        this.content = content;
-    }
 
     private String transpose(List<List<String>> convolutions, int max_index) {
         String converted = new String("");
@@ -41,9 +22,9 @@ public class Parser {
         for (int i = 0; i < max_index; i++) {
             for (int j = 0; j < convolutions.size(); j++) {
                 try {
-                    converted = converted.concat(convolutions.get(j).get(i) + handler.getDelimiter());
+                    converted = converted.concat(convolutions.get(j).get(i) + delimiter);
                 } catch(Exception excpt){
-                    converted = converted.concat(String.valueOf(handler.getDelimiter()));
+                    converted = converted.concat(String.valueOf(delimiter));
                 }
             }
 
@@ -77,11 +58,11 @@ public class Parser {
             }
 
             if (content.get(i).contains("-----")) {
-                String iteration = NumberFormat.getInstance().format(counter) + handler.getDelimiter();
+                String iteration = NumberFormat.getInstance().format(counter) + delimiter;
                 result = result.concat(iteration);
                 counter++;
             } else {
-                result = result.concat(content.get(i) + handler.getDelimiter());
+                result = result.concat(content.get(i) + delimiter);
                 dump++;
             }
         }
@@ -92,7 +73,7 @@ public class Parser {
     }
 
     private String parseVertically(String tgt) {
-        String[] split_str = tgt.split(String.valueOf(handler.getDelimiter()));
+        String[] split_str = tgt.split(String.valueOf(delimiter));
         List<List<String>> convolutions = new ArrayList<List<String>>();
         List<String> convo_dump = new ArrayList<String>();
 
@@ -104,10 +85,10 @@ public class Parser {
                 convolutions.add(convo_dump);
 
             if (i == 0)
-                col = col.concat(split_str[i] + handler.getDelimiter());
+                col = col.concat(split_str[i] + delimiter);
 
             else if (split_str[i].contains("\n")) {
-                col = col.concat(split_str[i].replace("\n", "") + handler.getDelimiter());
+                col = col.concat(split_str[i].replace("\n", "") + delimiter);
                 convolutions.add(convo_dump);
                 convo_dump = new ArrayList<String>();
             } else {
@@ -124,8 +105,8 @@ public class Parser {
     }
 
     public String removeInvalidChars(String tgt) {
-        tgt = tgt.replaceAll(handler.getDelimiter() + "$", "");
-        tgt = tgt.replaceAll(handler.getDelimiter() + "\n", "\n");
+        tgt = tgt.replaceAll(delimiter + "$", "");
+        tgt = tgt.replaceAll(delimiter + "\n", "\n");
 
         return tgt;
     }
@@ -142,15 +123,38 @@ public class Parser {
         return removeInvalidChars(res);
     }
 
-    public boolean saveParsedData(String parsedRes, String outputPath) {
-        try {
-            handler.setWriter(outputPath);
-            handler.writeFile(parsedRes);
+    public void setOrientation(char orientation) {
+        this.orientation = orientation;
+    }
 
-            return true;
-        } catch(Exception excpt) {
-            return false;
+    public char getOrientation() {
+        return this.orientation;
+    }
+
+    public void setDelimiter(String delimiter) {
+        if(delimiter.length() != 1){
+            throw new DelimitadorInvalidoException("Delimitador deve ser apenas um caracter");
         }
+        this.delimiter = delimiter.charAt(0);
+    }
 
+    public char getDelimiter() {
+        return delimiter;
+    }
+
+    public void setHandler(FileHandler handler) {
+        this.handler = handler;
+    }
+
+    public int getIteration() {
+        return this.iteration - 1;
+    }
+
+    public List<Integer> getAnalises() { return this.analises; }
+
+
+
+    public void setContent(List<String> content) {
+        this.content = content;
     }
 }

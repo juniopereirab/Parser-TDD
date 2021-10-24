@@ -7,12 +7,12 @@ public class Main {
         Scanner i = new Scanner(System.in);
         AnalysisFile entryFile = new AnalysisFile();
         FileHandler handle = new FileHandler();
-        Parser p;
+        Parser p = new Parser();
 
         String in = new String("");
         String out = new String("");
         String dump;
-        char delimitator;
+        String delimitator;
         char orientation;
 
         System.out.println("Escreva o caminho do arquivo de entrada: ");
@@ -20,22 +20,23 @@ public class Main {
         entryFile.openTimeAnalysis(in);
 
         System.out.println("Escreva o separador desejado. Apenas um caracter é aceito: ");
-        dump = i.nextLine();
-        handle.setDelimiter(dump);
+        delimitator = i.nextLine();
+        p.setDelimiter(delimitator);
 
         System.out.println("Escolha a opção de orientação da saída dos dados: use 'v' para vertical e 'h' para horizontal: ");
         orientation = i.nextLine().charAt(0);
+        p.setOrientation(orientation);
 
         System.out.println("Escreva o caminho do arquivo de saída: ");
         out = i.nextLine();
 
-        p = new Parser(orientation);
+        p = new Parser();
         p.setHandler(handle);
 
         if (true) {
             p.setContent(entryFile.getContent());
             String parsedData = p.getParsedData();
-            if (p.saveParsedData(parsedData, out)) {
+            if (true) {
                 System.out.println("Arquivo parseado.");
                 System.out.printf("Iterações: %d\n", p.getIteration());
 

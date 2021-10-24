@@ -7,27 +7,47 @@ import static org.junit.Assert.*;
 
 public class ParserTest {
     private static final String timeAnalysisPath = "assets/analysisTime.out";
+    private Parser p;
+
+    @Before
+    public void initialize() { p = new Parser(); }
+
+    @Test
+    public void receiveDelimiterCharWithSuccess() {
+        p.setDelimiter(";");
+        assertEquals(';', p.getDelimiter());
+        p.setDelimiter("\r");
+        assertEquals('\r', p.getDelimiter());
+        p.setDelimiter("\n");
+        assertEquals('\n', p.getDelimiter());
+        p.setDelimiter("\t");
+        assertEquals('\t', p.getDelimiter());
+    }
+
+    @Test(expected = DelimitadorInvalidoException.class)
+    public void receiveDelimiterStringWithFailure() {
+        String delimiter = "test";
+        p.setDelimiter(delimiter);
+    }
+
     @Test
     public void receiveDataOutOrientation() {
-        Parser p = new Parser('v');
+        p.setOrientation('v');
         assertEquals('v', p.getOrientation());
 
-        Parser p1 = new Parser('h');
-        assertEquals('h', p1.getOrientation());
+        p.setOrientation('h');
+        assertEquals('h', p.getOrientation());
     }
 
     @Test
     public void parseDataHorizontally() {
-        FileHandler handler = new FileHandler();
-        handler.setDelimiter(";");
-
         AnalysisFile entryFile = new AnalysisFile();
         entryFile.openTimeAnalysis("assets/reducedExample1.out");
         entryFile.getDataFromFile();
 
-        Parser p = new Parser('h');
         p.setContent(entryFile.getContent());
-        p.setHandler(handler);
+        p.setDelimiter(";");
+        p.setOrientation('h');
         String res = "1;345;544;465;767\n2;703;812;800";
         assertEquals(res, p.getParsedData());
 
@@ -35,25 +55,23 @@ public class ParserTest {
         entryFile2.openTimeAnalysis("assets/reducedExample2.out");
         entryFile2.getDataFromFile();
 
-        Parser p2 = new Parser('h');
+        Parser p2 = new Parser();
         p2.setContent(entryFile2.getContent());
-        p2.setHandler(handler);
+        p2.setDelimiter(";");
+        p2.setOrientation('h');
         String res2 = "1;244;326;425;577\n2;503;734;799";
         assertEquals(res2, p2.getParsedData());
     }
 
     @Test
     public void parseDataVertically() {
-        FileHandler handler = new FileHandler();
-        handler.setDelimiter(";");
-
         AnalysisFile entryFile = new AnalysisFile();
         entryFile.openTimeAnalysis("assets/reducedExample1.out");
         entryFile.getDataFromFile();
 
-        Parser p = new Parser('v');
         p.setContent(entryFile.getContent());
-        p.setHandler(handler);
+        p.setDelimiter(";");
+        p.setOrientation('v');
         String res = "1;2\n345;703\n544;812\n465;800\n767;";
         assertEquals(res, p.getParsedData());
 
@@ -61,36 +79,12 @@ public class ParserTest {
         entryFile2.openTimeAnalysis("assets/reducedExample2.out");
         entryFile2.getDataFromFile();
 
-        Parser p2 = new Parser('v');
+        Parser p2 = new Parser();
         p2.setContent(entryFile2.getContent());
-        p2.setHandler(handler);
+        p2.setDelimiter(";");
+        p2.setOrientation('v');
         String res2 = "1;2\n244;503\n326;734\n425;799\n577;";
 
         assertEquals(res2, p2.getParsedData());
-    }
-
-    @Test
-    public void saveParsedDataCorrectly() {
-        FileHandler handler = new FileHandler();
-        handler.setDelimiter(";");
-        Parser p = new Parser('h');
-        p.setHandler(handler);
-        String parsedData = new String("");
-
-
-        parsedData = p.getParsedData();
-        assertEquals(true, p.saveParsedData(parsedData, "assets/final.out"));
-    }
-
-    @Test
-    public void saveParsedDataIncorrectly() {
-        FileHandler handler = new FileHandler();
-        handler.setDelimiter(";");
-        Parser p = new Parser('h');
-        p.setHandler(handler);
-        String parsedData = new String("");
-
-        parsedData = p.getParsedData();
-        assertEquals(false, p.saveParsedData(parsedData, "assets/"));
     }
 }
