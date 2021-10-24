@@ -1,6 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnalysisFile {
     private static final String timeAnalysisPath = "assets/analysisTime.out";
@@ -8,6 +8,8 @@ public class AnalysisFile {
     
     private FileReader timeAnalysis;
     private FileReader memoryAnalysis;
+
+    private List<String> content = new ArrayList<>();
 
     public void config(){
         try {
@@ -43,5 +45,31 @@ public class AnalysisFile {
     public FileReader getMemoryAnalysis() {
         return memoryAnalysis;
     }
+    public List<String> getContent() { return content; }
+
+    public void getDataFromFile() {
+        try {
+            BufferedReader buffReader = new BufferedReader(timeAnalysis);
+
+            this.checkAndAddContent(buffReader);
+
+            buffReader.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkAndAddContent(BufferedReader buffReader) throws Exception {
+        try{
+            String text;
+
+            while ((text = buffReader.readLine()) != null) {
+                this.content.add(text);
+            }
+        } catch (IOException e) {
+            throw new Exception(e);
+        }
+    }
+
 
 }
