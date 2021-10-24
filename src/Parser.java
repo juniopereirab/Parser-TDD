@@ -38,16 +38,25 @@ public class Parser {
     public boolean getDataFromFile() {
         try {
             BufferedReader buffReader = new BufferedReader(this.file.getTimeAnalysis());
-            String text;
 
-            while ((text = buffReader.readLine()) != null) {
-                this.content.add(text);
-            }
+            this.checkAndAddContent(buffReader);
 
             buffReader.close();
             return true;
         } catch(Exception excpt) {
             return false;
+        }
+    }
+
+    private void checkAndAddContent(BufferedReader buffReader) throws Exception {
+        try{
+            String text;
+
+            while ((text = buffReader.readLine()) != null) {
+                this.content.add(text);
+            }
+        } catch (IOException e) {
+            throw new Exception(e);
         }
     }
 
