@@ -12,9 +12,11 @@ public class Parser {
     private char delimitator;
     private List<String> content = new ArrayList<String>();
     private List<Integer> analises = new ArrayList<Integer>();
-//    private AnalysisFile file;
+    private AnalysisFile file;
 
     public Parser(String file, char orientation, char delimitator) {
+        this.file = new AnalysisFile();
+        this.file.openTimeAnalysis(file);
         this.delimitator = delimitator;
         this.orientation = orientation;
     }
@@ -33,10 +35,9 @@ public class Parser {
         return this.orientation;
     }
 
-    public boolean getDataFromFile(String outputPath) {
+    public boolean getDataFromFile() {
         try {
-            FileReader outputFile = new FileReader(outputPath);
-            BufferedReader buffReader = new BufferedReader(outputFile);
+            BufferedReader buffReader = new BufferedReader(this.file.getTimeAnalysis());
             String text;
 
             while ((text = buffReader.readLine()) != null) {

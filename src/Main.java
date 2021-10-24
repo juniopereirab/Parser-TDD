@@ -30,7 +30,7 @@ public class Main {
 
         p = new Parser(in, orientation, delimitator);
 
-        if (p.getDataFromFile(in)) {
+        if (p.getDataFromFile()) {
             String parsedData = p.getParsedData();
             if (p.saveParsedData(parsedData, out)) {
                 System.out.println("Arquivo parseado.");
