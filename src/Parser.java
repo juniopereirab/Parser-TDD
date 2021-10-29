@@ -1,3 +1,5 @@
+import com.sun.jdi.connect.Connector;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.text.NumberFormat;
@@ -6,8 +8,13 @@ public class Parser {
     private char orientation;
     private char delimiter;
     private int iteration;
-    private List<String> content = new ArrayList<>();
-    private List<Integer> analises = new ArrayList<>();
+    private Persistencia data;
+
+    public Parser(char delimiter, char orientation, String target_file){
+        this.orientation = orientation;
+        this.delimiter = delimiter;
+        this.data = new Persistencia(target_file);
+    }
 
     public String getParsedData() {
         String res = "";
@@ -34,10 +41,10 @@ public class Parser {
                 convolutions.add(convo_dump);
 
             if (i == 0)
-                col = col.concat(split_str[i] + delimiter);
+                col = col.concat(split_str[i] + this.delimiter);
 
             else if (split_str[i].contains("\n")) {
-                col = col.concat(split_str[i].replace("\n", "") + delimiter);
+                col = col.concat(split_str[i].replace("\n", "") + this.delimiter);
                 convolutions.add(convo_dump);
                 convo_dump = new ArrayList<String>();
             } else {
@@ -57,25 +64,25 @@ public class Parser {
         int dump = 0;
         int counter = 1;
 
-        for (int i = 0; i < content.size(); i++) {
-            if (i != 0 && content.get(i).contains("-----")) {
+        for (int i = 0; i < this.data.getContent().size(); i++) {
+            if (i != 0 && this.data.getContent().get(i).contains("-----")) {
                 result = result.concat("\n");
-                analises.add(dump);
+                this.data.convo.add(dump);
                 dump = 0;
             }
 
-            if (content.get(i).contains("-----")) {
-                String iteration = NumberFormat.getInstance().format(counter) + delimiter;
+            if (this.data.getContent().get(i).contains("-----")) {
+                String iteration = NumberFormat.getInstance().format(counter) + this.delimiter;
                 result = result.concat(iteration);
                 counter++;
             } else {
-                result = result.concat(content.get(i) + delimiter);
+                result = result.concat(this.data.getContent().get(i) + this.delimiter);
                 dump++;
             }
         }
 
-        analises.add(dump);
-        iteration = counter;
+        this.data.convo.add(dump);
+        this.iteration = counter;
         return result;
     }
 
@@ -85,9 +92,9 @@ public class Parser {
         for (int i = 0; i < max_index; i++) {
             for (int j = 0; j < convolutions.size(); j++) {
                 try {
-                    converted = converted.concat(convolutions.get(j).get(i) + delimiter);
+                    converted = converted.concat(convolutions.get(j).get(i) + this.delimiter);
                 } catch(Exception excpt){
-                    converted = converted.concat(String.valueOf(delimiter));
+                    converted = converted.concat(String.valueOf(this.delimiter));
                 }
             }
 
@@ -111,8 +118,8 @@ public class Parser {
 
 
     public String removeInvalidChars(String tgt) {
-        tgt = tgt.replaceAll(delimiter + "$", "");
-        tgt = tgt.replaceAll(delimiter + "\n", "\n");
+        tgt = tgt.replaceAll(this.delimiter + "$", "");
+        tgt = tgt.replaceAll(this.delimiter + "\n", "\n");
 
         return tgt;
     }
@@ -137,16 +144,20 @@ public class Parser {
     }
 
     public char getDelimiter() {
-        return delimiter;
+        return this.delimiter;
     }
 
     public int getIteration() {
         return this.iteration - 1;
     }
 
-    public List<Integer> getAnalises() { return this.analises; }
+    public List<Integer> getAnalises() { return this.data.convo; }
 
-    public void setContent(List<String> content) {
-        this.content = content;
+    public boolean getFileContent() {
+        return this.data.getFileContent(this);
+    }
+
+    public boolean saveParsedData(String out, String parsedData) {
+        return this.data.saveParsedData(out, parsedData);
     }
 }
