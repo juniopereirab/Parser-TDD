@@ -10,7 +10,7 @@ public class ParserTest {
     private Parser p;
 
     @Before
-    public void initialize() { p = new Parser(); }
+    public void initialize() { p = new Parser(';', 'v', timeAnalysisPath); }
 
     @Test
     public void receiveDelimiterCharWithSuccess() {
@@ -47,50 +47,27 @@ public class ParserTest {
 
     @Test
     public void parseDataHorizontally() {
-        AnalysisFile entryFile = new AnalysisFile();
-        entryFile.openTimeAnalysis("assets/reducedExample1.out");
-        entryFile.getDataFromFile();
-
-        p.setContent(entryFile.getContent());
-        p.setDelimiter(";");
-        p.setOrientation("h");
+        Parser p1 = new Parser(';', 'h', "assets/reducedExample1.out");
         String res = "1;345;544;465;767\n2;703;812;800";
-        assertEquals(res, p.getParsedData());
+        assertEquals(true, p1.getFileContent());
+        assertEquals(res, p1.getParsedData());
 
-        AnalysisFile entryFile2 = new AnalysisFile();
-        entryFile2.openTimeAnalysis("assets/reducedExample2.out");
-        entryFile2.getDataFromFile();
-
-        Parser p2 = new Parser();
-        p2.setContent(entryFile2.getContent());
-        p2.setDelimiter(";");
-        p2.setOrientation("h");
+        Parser p2 = new Parser(';', 'h', "assets/reducedExample2.out");
         String res2 = "1;244;326;425;577\n2;503;734;799";
+        assertEquals(true, p2.getFileContent());
         assertEquals(res2, p2.getParsedData());
     }
 
     @Test
     public void parseDataVertically() {
-        AnalysisFile entryFile = new AnalysisFile();
-        entryFile.openTimeAnalysis("assets/reducedExample1.out");
-        entryFile.getDataFromFile();
-
-        p.setContent(entryFile.getContent());
-        p.setDelimiter(";");
-        p.setOrientation("v");
+        Parser p1 = new Parser(';', 'v', "assets/reducedExample1.out");
         String res = "1;2\n345;703\n544;812\n465;800\n767;";
-        assertEquals(res, p.getParsedData());
+        assertEquals(true, p1.getFileContent());
+        assertEquals(res, p1.getParsedData());
 
-        AnalysisFile entryFile2 = new AnalysisFile();
-        entryFile2.openTimeAnalysis("assets/reducedExample2.out");
-        entryFile2.getDataFromFile();
-
-        Parser p2 = new Parser();
-        p2.setContent(entryFile2.getContent());
-        p2.setDelimiter(";");
-        p2.setOrientation("v");
+        Parser p2 = new Parser(';', 'v', "assets/reducedExample2.out");
         String res2 = "1;2\n244;503\n326;734\n425;799\n577;";
-
+        assertEquals(true, p2.getFileContent());
         assertEquals(res2, p2.getParsedData());
     }
 }

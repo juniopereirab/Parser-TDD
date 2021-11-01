@@ -6,39 +6,35 @@ public class Main {
     public static void main(String[] args) {
         try {
             Scanner i = new Scanner(System.in);
-            AnalysisFile entryFile = new AnalysisFile();
-            FileHandler handler = new FileHandler();
-            Parser p = new Parser();
 
-            String in;
-            String out;
+            String in = new String("");
+            String out = new String("");
             String delimiter;
-            String orientation;
+            char delimiter_char;
+            char orientation;
 
             System.out.println("Escreva o caminho do arquivo de entrada: ");
             in = i.nextLine();
-            entryFile.openTimeAnalysis(in);
-            entryFile.getDataFromFile();
 
             System.out.println("Escreva o separador desejado. Apenas um caracter é aceito: ");
             delimiter = i.nextLine();
-            p.setDelimiter(delimiter);
+            delimiter_char = delimiter.charAt(0);
 
             System.out.println("Escolha a opção de orientação da saída dos dados: use 'v' para vertical e 'h' para horizontal: ");
-            orientation = i.nextLine();
-            p.setOrientation(orientation);
+            orientation = i.nextLine().charAt(0);
 
             System.out.println("Escreva o caminho do arquivo de saída: ");
             out = i.nextLine();
-            handler.setWriter(out);
+            Parser p = new Parser(delimiter_char, orientation, in);
+            if(p.getFileContent()) {
+                String parsedData = p.getParsedData();
+                if (p.saveParsedData(out, parsedData)) {
+                    printAnalysis(p);
+                } else {
+                    throw new EscritaNaoPermitidaException("Escrita não autorizada");
+                }
+            }
 
-            p.setContent(entryFile.getContent());
-            String parsedData = p.getParsedData();
-
-            handler.setResult(parsedData);
-            handler.writeFile();
-
-            printAnalysis(p);
 
         } catch (Exception e) {
             e.printStackTrace();
