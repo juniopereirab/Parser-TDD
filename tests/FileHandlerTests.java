@@ -16,24 +16,6 @@ public class FileHandlerTests {
     }
 
     @Test
-    public void receiveDelimiterCharWithSuccess() {
-        handler.setDelimiter(";");
-        assertEquals(';', handler.getDelimiter());
-        handler.setDelimiter("\r");
-        assertEquals('\r', handler.getDelimiter());
-        handler.setDelimiter("\n");
-        assertEquals('\n', handler.getDelimiter());
-        handler.setDelimiter("\t");
-        assertEquals('\t', handler.getDelimiter());
-    }
-
-    @Test(expected = DelimitadorInvalidoException.class)
-    public void receiveDelimiterStringWithFailure() {
-        String delimiter = "test";
-        handler.setDelimiter(delimiter);
-    }
-
-    @Test
     public void createFileWriter() {
         try{
             handler.setWriter(outputPath);
@@ -48,7 +30,8 @@ public class FileHandlerTests {
     public void writeInFile() {
         try {
             handler.setWriter(outputPath);
-            handler.writeFile("teste");
+            handler.setResult("teste");
+            handler.writeFile();
             FileReader outputFile = new FileReader(outputPath);
             BufferedReader buffReader = new BufferedReader(outputFile);
             String text = buffReader.readLine();
@@ -62,6 +45,7 @@ public class FileHandlerTests {
     @Test(expected = EscritaNaoPermitidaException.class)
     public void notAllowedToWriteFile() {
             handler.setWriter("assets/");
-            handler.writeFile("teste");
+            handler.setResult("teste");
+            handler.writeFile();
     }
 }
